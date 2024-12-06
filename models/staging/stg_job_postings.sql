@@ -17,4 +17,4 @@ SELECT
   raw_record:posted_time::timestamp AS posted_time,
   raw_record:expire_time::timestamp AS expire_time,
   raw_record:apply_url::string AS apply_url
-FROM JOB_DATA_DB.RAW_DATA.raw_jobs_data
+FROM {{ source('raw_data', 'raw_jobs_data') }}

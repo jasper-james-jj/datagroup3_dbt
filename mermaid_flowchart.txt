@@ -1,0 +1,46 @@
+---
+config:
+  layout: dagre
+---
+flowchart TD
+ subgraph S3_Bucket["S3 Bucket"]
+        A["JSON Files"]
+  end
+ subgraph Snowflake_RAW["Snowflake RAW Layer"]
+        R["RAW Table (VARIANT)"]
+  end
+ subgraph dbt_Staging["dbt Staging Models"]
+        S1["stg_companies"]
+        S2["stg_locations"]
+        S3["stg_job_types"]
+        S5["stg_job_skills"]
+        S4["stg_experience_level"]
+        S6["stg_job_postings"]
+  end
+ subgraph dbt_Enriched["dbt Core Models"]
+        D1["dim_companies"]
+        D2["dim_locations"]
+        D3["dim_job_types"]
+        D4["dim_experience_level"]
+        D5["dim_job_skills"]
+        B["bridge_job_skills"]
+        F["fct_job_postings"]
+  end
+ subgraph Reporting["Reporting & Analysis"]
+        VIS["BI / Visualization Tool"]
+  end
+    A --> R
+    R --> S1 & S2 & S3 & S4 & S5 & S6
+    S1 --> D1
+    S2 --> D2
+    S3 --> D3
+    S4 --> D4
+    S5 --> D5
+    S6 --> F
+    D1 --> F
+    D2 --> F
+    D3 --> F
+    D4 --> F
+    D5 --> B
+    B --> F
+    F --> VIS
